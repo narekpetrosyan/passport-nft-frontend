@@ -1,0 +1,29 @@
+.btn {
+  font-family: "Poppins-SemiBold";
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: #a60063;
+  outline: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background: rgba(166, 0, 99, 0.5);
+  }
+}
+
+.disabled {
+  background: #959595;
+  cursor: not-allowed;
+  &:hover {
+    background: #959595;
+  }
+}

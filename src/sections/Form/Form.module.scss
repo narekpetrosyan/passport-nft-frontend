@@ -1,0 +1,48 @@
+.wrapper {
+  background: #fff;
+  padding: 130px 0 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.fish {
+  position: absolute;
+  left: 200px;
+  max-width: 374px;
+  width: 100%;
+  z-index: 1;
+
+  @media screen and (max-width: 900px) {
+    left: 0;
+  }
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  align-items: center;
+  justify-content: center;
+  max-width: 750px;
+  width: 100%;
+  z-index: 2;
+
+  .title {
+    text-align: center;
+    width: 100%;
+    font-family: Syne-Bold;
+    font-size: 48px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .paragraph {
+    color: #3a3945;
+    text-align: center;
+    font-family: Poppins-Regular;
+    font-size: 18px;
+    font-weight: 400;
+  }
+}

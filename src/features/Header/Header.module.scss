@@ -1,0 +1,44 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+
+.accInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #a60063;
+  }
+
+  .nameBalance {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .name {
+    color: #fff;
+    font-family: Poppins-Regular;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .balance {
+    color: #fff;
+    font-family: Poppins-Bold;
+    font-size: 14px;
+    font-weight: 700;
+  }
+}
