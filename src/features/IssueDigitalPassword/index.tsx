@@ -5,18 +5,15 @@ import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import formSchema from "./formSchema";
 import { safeMintAbi } from "../../consts/abi";
-import {
-  useAccount,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from "wagmi";
-
-import styles from "./IssueDigitalPassword.module.scss";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import Modal from "../../components/Modal";
 import { queryClient } from "../../App";
+import { useWeb3React } from "../../hooks/useWeb3React";
+
+import styles from "./IssueDigitalPassword.module.scss";
 
 export const IssueDigitalPassword: FC = () => {
-  const { address } = useAccount();
+  const { address, isConnected, connectAsync, connectors } = useWeb3React();
   const { writeContractAsync, isPending, data } = useWriteContract();
   const { isSuccess, isFetching } = useWaitForTransactionReceipt({
     hash: data,
@@ -48,25 +45,48 @@ export const IssueDigitalPassword: FC = () => {
   const { handleSubmit } = hookForm;
 
   const handleIssue = handleSubmit(async (data) => {
-    if (!address) {
-      return;
-    }
     try {
-      await writeContractAsync({
-        address: import.meta.env.APP_PASSPORT_CONTRACT_ADDRESS as `0x${string}`,
-        abi: [safeMintAbi],
-        functionName: "safeMint",
-        args: [
-          address!,
-          {
-            firstName: data.name,
-            lastName: data.surname,
-            citizenship: data.nationality,
-            age: BigInt(data.age),
-            gender: data.gender,
-          },
-        ],
-      });
+      if (!address && !isConnected) {
+        const mmConnector = connectors.find((el) => el.id === "io.metamask");
+        if (!mmConnector) {
+          return;
+        }
+        const { accounts } = await connectAsync({ connector: mmConnector });
+
+        await writeContractAsync({
+          address: import.meta.env
+            .APP_PASSPORT_CONTRACT_ADDRESS as `0x${string}`,
+          abi: [safeMintAbi],
+          functionName: "safeMint",
+          args: [
+            accounts[0]!,
+            {
+              firstName: data.name,
+              lastName: data.surname,
+              citizenship: data.nationality,
+              age: BigInt(data.age),
+              gender: data.gender,
+            },
+          ],
+        });
+      } else {
+        await writeContractAsync({
+          address: import.meta.env
+            .APP_PASSPORT_CONTRACT_ADDRESS as `0x${string}`,
+          abi: [safeMintAbi],
+          functionName: "safeMint",
+          args: [
+            address!,
+            {
+              firstName: data.name,
+              lastName: data.surname,
+              citizenship: data.nationality,
+              age: BigInt(data.age),
+              gender: data.gender,
+            },
+          ],
+        });
+      }
     } catch (error) {
       console.log(error);
     }
